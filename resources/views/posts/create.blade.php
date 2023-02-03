@@ -20,7 +20,10 @@ Create
         <div class="mb-3">
             <label class="form-label">creator</label>
             <select name="creator" id=""class="form-control" >
-            <option>ALI</option>
+                @foreach ($Users as $user)
+                <option value="{{$user->id}}">{{$user->name}}</option>
+
+                @endforeach
 
 
             </select>

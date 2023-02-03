@@ -3,40 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\post;
+use App\Models\User;
+use Carbon\Carbon;
 
 class PostController extends Controller
 {
     public function index(){
-        $posts =[
-            [
-                'id'=>1,
-                'title'=> 'laravel',
-                'desc'=>"lorem",
-                'posted_by'=> 'ali',
-                'created_by'=>'2-2-2020 '
-            ],
-            [
-                'id'=>2,
-                'title'=> 'c++',
-                'desc'=>"lorem",
-                'posted_by'=> 'ahmed',
-                'created_by'=>'2-2-2020 '
-            ],
-            [
-                'id'=>3,
-                'title'=> 'c',
-                'desc'=>"lorem",
-                'posted_by'=> 'Mostafa',
-                'created_by'=>'2-2-2020 '
-            ],
-            [
-                'id'=>4,
-                'title'=> 'PHP',
-                'desc'=>"lorem",
-                'posted_by'=> 'Esraa',
-                'created_by'=>'2-2-2020 '
-            ]
-            ];
+        $posts =post::simplePaginate(5);
+
+
             return view( 'posts.index', [
                 'posts'=>$posts
             ]);
@@ -44,40 +20,67 @@ class PostController extends Controller
 
     }
 
+
+
     public function show($postId)
     {
-        $post = [
-
-            'id' => 1,
-            'title' => 'laravel',
-            'desc' => 'lorem',
-            'posted_by' => 'Ahmed',
-            'created_by' => '2022-10-01 01:00:00',
-        ];
-
+        // $post = post::where('id', $postId)->first();
+        $post= post::find($postId);
         return view('posts.show', ['post' => $post]);
     }
 
+
+
+
+
     public function create(){
-        return view('posts.create');
+        $Users=User::all();
+
+        return view('posts.create' , [
+            'Users' => $Users,
+        ]);
     }
+
+
+
+
+
 
     public function store(Request $request){
         $data = $request->all();
+        // dd($data);
         $title = $data['title'];
         $description = $data['desc'];
         $postCreator = $data['creator'];
 
-        // dd($title, $description, $postCreator);
+post::create([
+    'title'=>$title,
+    'desc'=>$description,
+    'user_Id'=>$postCreator,
 
-        return 'we are in store';
+]);
+        return redirect(route('posts'));
 
     }
 
     public function destroy($postId){
 
-        $postId->destroy();
-          return'Item has been deleted';
+        post::findOrfail($postId)->delete();
+        return redirect('/posts');
+        // $post->restore();;
+    }
+
+    public function restore(){
+        $posts=post::withTrashed()->restore();
+
+        return redirect('/posts');
+
+
+    }
+
+    public function created_at_mdY()
+    {
+       return Carbon::parse($this->created_at)->format('m/d/Y');
     }
 
 }
