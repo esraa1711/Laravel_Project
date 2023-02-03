@@ -14,7 +14,7 @@
         list-style: none;
         font-weight: bold;
         text-decoration: none;
-        font-size: 25px;
+        font-size: 15px;
     }
     P{
         font-size: 20px;
@@ -23,7 +23,7 @@
         }
 </style>
 <body>
-<div class="container">
+<div class="container " style="height: 1000px">
 
         @yield("content")
 

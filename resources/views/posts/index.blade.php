@@ -21,8 +21,8 @@
                         <th scope="row">{{ $post['id'] }}</th>
                         <td>{{ $post['title'] }}</td>
                         <td>{{ $post['desc'] }}</td>
-                        <td>{{ $post['user_id'] }}</td>
-                        <td>  {{ \Carbon\Carbon::parse($post->created_at)->format('m/d/Y') }} </td>
+                        <td>{{ $post->user ? $post->user->name : "Noy Found"}}</td>
+                        <td>  {{ \Carbon\Carbon::parse($post->created_at)->format('d/m/Y') }} </td>
                         <td>
                             <a href="{{route('posts.show', [$post['id']])}}">
                                 <button type="button" class="btn btn-primary">View</button>
@@ -30,15 +30,19 @@
                             </a>
 
                             {{-- <a href="{{route('')}}"></a> --}}
-                            <button type="button" class="btn btn-success">Edit</button>
-<form method="POST" action="{{route('posts.destroy' , [$post['id']])}}">
-    @method('delete')
-    @csrf
 
-    <button type="submit" class="btn btn-danger delete" data-confirm="Are you sure to delete this item?">Delete</button>
+                            <a href="{{route('posts.edit' , $post->id)}}">
+                              <button type="button" class="btn btn-success">Edit</button>
+                            </a>
+
+                            <form method="POST" action="{{route('posts.destroy' , [$post['id']])}}">
+                                @method('delete')
+                                    @csrf
+
+                                    <button type="submit" class="btn btn-danger delete" data-confirm="Are you sure to delete this item?">Delete</button>
 
 
-</form>
+                                            </form>
 
 
                         </td>
@@ -46,5 +50,6 @@
                 @endforeach
             </tbody>
         </table>
+        {{$posts->links()}}
 
         @endsection

@@ -10,7 +10,8 @@ use Carbon\Carbon;
 class PostController extends Controller
 {
     public function index(){
-        $posts =post::simplePaginate(5);
+        $posts =post::paginate(2);
+        // $post=DB::table('posts')->paginate(5);
 
 
             return view( 'posts.index', [
@@ -77,10 +78,35 @@ post::create([
 
 
     }
+public function edit($postId){
+    $post= post::findOrFail($postId);
+    // dd($postId);
+    $Users=User::all();
 
-    public function created_at_mdY()
-    {
-       return Carbon::parse($this->created_at)->format('m/d/Y');
-    }
+    return view('posts.edit', ['post' => $post,'Users' => $Users,
+]);
+
+}
+
+public function update($postId , Request $request){
+    $post= post::findOrFail($postId);
+    $data = $request->all();
+        // dd($data);
+        $title = $data['title'];
+        $description = $data['desc'];
+        $postCreator = $data['creator'];
+    $post->update([
+        'title'=>$title,
+        'desc'=>$description,
+        'user_Id'=>$postCreator,
+
+
+    ]);
+    return redirect(route('posts'));
+
+
+}
+
+
 
 }
