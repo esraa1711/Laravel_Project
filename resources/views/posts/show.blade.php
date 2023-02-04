@@ -1,12 +1,16 @@
-@extends("layout")
+@extends("layouts.app")
 @section("title")
 Show
+@endsection
+@section("allposts")
+<a href="{{route('posts')}}">All Posts</a>
+
 @endsection
 @section("content")
 
 
+
     <div class="title">
-        <a href="{{route('posts')}}">All Posts</a>
     </div>
     <div class="info border">
         <p>Title : {{$post['title']}}</p>

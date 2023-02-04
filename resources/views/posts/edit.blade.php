@@ -1,7 +1,11 @@
-@extends("layout")
+@extends("layouts.app")
 
 @section("title")
 Edit Form
+@endsection
+@section("allposts")
+<a href="{{route('posts')}}">All Posts</a>
+
 @endsection
 
 @section("content")

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\StorePostRequest;
 use App\Models\post;
 use App\Models\User;
 use Carbon\Carbon;
@@ -27,6 +28,7 @@ class PostController extends Controller
     {
         // $post = post::where('id', $postId)->first();
         $post= post::find($postId);
+
         return view('posts.show', ['post' => $post]);
     }
 
@@ -47,7 +49,7 @@ class PostController extends Controller
 
 
 
-    public function store(Request $request){
+    public function store(StorePostRequest $request){
         $data = $request->all();
         // dd($data);
         $title = $data['title'];
@@ -58,8 +60,12 @@ post::create([
     'title'=>$title,
     'desc'=>$description,
     'user_Id'=>$postCreator,
+    'slug' => \Str::slug($request->slug)
+
 
 ]);
+
+
         return redirect(route('posts'));
 
     }

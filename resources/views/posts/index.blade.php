@@ -1,4 +1,4 @@
-@extends('layout')
+@extends("layouts.app")
 @section("content")
 
 
@@ -9,6 +9,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">title</th>
+                    <th scope="col">slug</th>
                     <th scope="col">desc</th>
                     <th scope="col">posted_by</th>
                     <th scope="col">created_by</th>
@@ -20,10 +21,13 @@
                     <tr>
                         <th scope="row">{{ $post['id'] }}</th>
                         <td>{{ $post['title'] }}</td>
+                        <td>{{ $post['slug'] }}</td>
+
                         <td>{{ $post['desc'] }}</td>
                         <td>{{ $post->user ? $post->user->name : "Noy Found"}}</td>
                         <td>  {{ \Carbon\Carbon::parse($post->created_at)->format('d/m/Y') }} </td>
                         <td>
+
                             <a href="{{route('posts.show', [$post['id']])}}">
                                 <button type="button" class="btn btn-primary">View</button>
 
@@ -50,6 +54,7 @@
                 @endforeach
             </tbody>
         </table>
+        <br>
         {{$posts->links()}}
 
         @endsection
